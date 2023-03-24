@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
 import json
-from models.state import State
 
 
 class FileStorage:
@@ -36,7 +35,7 @@ class FileStorage:
     def delete(self, obj=None):
         """Delete object from storage"""
         if obj is not None:
-            key = obj.__class__.name__ + "." + obj.id
+            key = obj.__class__.__name__ + "." + obj.id
             if key in self.__objects:
                 del self.__objects[key]
 
