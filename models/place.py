@@ -2,7 +2,11 @@
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
 import sqlalchemy
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, Float
+from sqlalchemy.orm import relationship
+from models.review import Review
+from os import getenv
+from models import storage
 
 
 class Place(BaseModel):
@@ -16,6 +20,18 @@ class Place(BaseModel):
     number_bathrooms = Column(Integer, default=0, nullable=False)
     max_guest = Column(Integer, default=0, nullable=False)
     price_by_night = Column(Integer, default=0, nullable=False)
-    latitude = Column(float, nullable=True)
-    longitude = Column(float, nullable=True)
+    latitude = Column(Float, nullable=True)
+    longitude = Column(Float, nullable=True)
+    reviews = relationship("Review", backref="place",
+                           cascade="all, delete-orphan")
     amenity_ids = []
+
+    if getenv("HBNB_TYPE_STORAGE", None) != "db":
+        @property
+        def reviews(self):
+            """Get a list of all linked Reviews."""
+            review_list = []
+            for review in list(storage.all(Review).values()):
+                if review.place_id == self.id:
+                    review_list.append(review)
+            return review_list
