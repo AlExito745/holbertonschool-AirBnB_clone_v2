@@ -34,6 +34,8 @@ class Place(BaseModel):
     longitude = Column(Float, nullable=True)
     reviews = relationship("Review", backref="place",
                            cascade="all, delete-orphan")
+    amenities = relationship("Amenity", secondary="place_amenity",
+                             viewonly=False)
     amenity_ids = []
 
     if getenv("HBNB_TYPE_STORAGE", None) != "db":
@@ -45,3 +47,23 @@ class Place(BaseModel):
                 if review.place_id == self.id:
                     review_list.append(review)
             return review_list
+
+        @property
+        def amenities(self):
+            """Get a list of Amenity instances based on amenity_ids."""
+            amenity_list = []
+            for amenity_id in self.amenity_ids:
+                key = "Amenity." + amenity_id
+                amenity = storage.all().get(key)
+                if amenity:
+                    amenity_list.append(amenity)
+            return amenity_list
+
+        @amenities.setter
+        def amenities(self, obj):
+            """Add an Amenity.id to the attribute amenity_ids."""
+            if isinstance(obj, Amenity):
+                if obj.id not in self.amenity_ids:
+                    self.amenity_ids.append(obj.id)
+            else:
+                return
