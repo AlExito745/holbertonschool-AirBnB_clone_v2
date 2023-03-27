@@ -11,7 +11,7 @@ from models import storage
 
 metadata = Base.metadata
 
-place_amenity = Table('place_amenity', metadata,
+association_table = Table('place_amenity', Base.metadata,
                       Column('place_id', String(60), ForeignKey('places.id'),
                              primary_key=True, nullable=False),
                       Column('amenity_id', String(60),
@@ -19,7 +19,7 @@ place_amenity = Table('place_amenity', metadata,
                              primary_key=True, nullable=False))
 
 
-class Place(BaseModel):
+class Place(BaseModel, Base):
     """ A place to stay """
     __tablename__ = "places"
     city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
@@ -33,9 +33,9 @@ class Place(BaseModel):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     reviews = relationship("Review", backref="place",
-                           cascade="all, delete-orphan")
+                           cascade="delete")
     amenities = relationship("Amenity", secondary="place_amenity",
-                             viewonly=False)
+                             viewonly=True)
     amenity_ids = []
 
     if getenv("HBNB_TYPE_STORAGE", None) != "db":
