@@ -53,7 +53,7 @@ def hello_06(n):
 @app.route("/number_odd_or_even/<int:n>")
 def hello_07(n):
     """Display a different HTML page if only given "int" even or odd."""
-    return render_template("6-number.html", n=n)
+    return render_template("6-number_odd_or_even.html", n=n)
 
 
 if __name__ == "__main__":
