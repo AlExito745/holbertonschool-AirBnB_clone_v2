@@ -47,7 +47,7 @@ def hello_05(n):
 def hello_06(n):
     """Display a HTML page if only given "int"."""
     n = str(n)
-    return render_template("5-number.html", n=n)
+    return render_template("5-number.html", n = n)
 
 
 if __name__ == "__main__":
