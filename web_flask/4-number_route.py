@@ -38,7 +38,7 @@ def hello_04(text="is cool"):
 def hello_05(n):
     """Returns other text."""
     if n is type(int):
-        return "{} is a number".format(n)
+        return "{} is a number".format(str(n))
 
 
 if __name__ == "__main__":
