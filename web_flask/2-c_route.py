@@ -20,7 +20,7 @@ def hello_02():
 
 
 @app.route("/c/<text>")
-def hello_03():
+def hello_03(text):
     """Replace text with variable."""
     text = text.replace("_", " ")
     return "C {}".format(text)
