@@ -34,11 +34,11 @@ def hello_04(text="is cool"):
     return "Python {}".format(text)
 
 
-@app.route("/number/<n>")
+@app.route("/number/<int:n>")
 def hello_05(n):
-    """Returns other text."""
-    if n is type(int):
-        return "{} is a number".format(str(n))
+    """Replace with "int" if only given "int"."""
+    n = str(n)
+    return "{} is a number".format(n)
 
 
 if __name__ == "__main__":
